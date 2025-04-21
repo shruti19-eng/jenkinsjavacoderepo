@@ -2,7 +2,8 @@
 node {
     try {
         stage('Checkout') {
-            git 'https://github.com/shruti19-eng/jenkinsjavacoderepo.git' // Replace with actual repo URL
+            git branch: 'main', url: 'https://github.com/shruti19-eng/jenkinsjavacoderepo.git'
+
         }
 
         stage('Build') {
