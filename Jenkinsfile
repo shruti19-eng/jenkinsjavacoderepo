@@ -7,7 +7,7 @@ node {
         }
 
         stage('Build') {
-            dir('my-app') { // Change 'my-app' if needed
+            dir('Javrepo1') { // Change 'my-app' if needed
                 echo 'Building the project...'
                 bat 'mvn clean package'
             }
