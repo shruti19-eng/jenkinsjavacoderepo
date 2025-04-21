@@ -1,29 +1,27 @@
-pipeline {
-    agent any
-    
-    tools {
-        maven 'Maven 3.6.3'
-    }
 
-    stages {
+node {
+    try {
         stage('Checkout') {
-            steps {
-                git branch:'main', url:'https://github.com/shruti19-eng/jenkinsjavacoderepo.git'  // Replace with actual repo
-            }
+            git 'https://github.com/shruti19-eng/jenkinsjavacoderepo.git' // Replace with actual repo URL
         }
 
         stage('Build') {
-            steps {
-                dir('Javarepo1') {  // Change to actual repo folder
-                    bat 'mvn clean package'
-                }
+            dir('my-app') { // Change 'my-app' if needed
+                echo 'Building the project...'
+                bat 'mvn clean package'
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Pipeline execution completed!'
+        stage('Archive Artifacts') {
+            archiveArtifacts artifacts: '**/target/*.war', onlyIfSuccessful: true
         }
+
+        echo 'Build succeeded!'
+        
+    } catch (Exception e) {
+        echo "Build failed due to: ${e}"
+        currentBuild.result = 'FAILURE'
+    } finally {
+        echo 'Pipeline execution completed!'
     }
 }
